@@ -3,7 +3,7 @@ import streamlit as st
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
-# from langchain_chroma import Chroma
+from langchain_chroma import Chroma
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -52,8 +52,8 @@ def load_and_process_pdf(file_path):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000)
     docs = text_splitter.split_documents(data)
     embeddings = HuggingFaceEmbeddings()
-    # vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)
-    # retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 3})
+    vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)
+    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 3})
     return retriever
 
 # Load PDF on first use
